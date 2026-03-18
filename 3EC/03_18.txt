@@ -4,6 +4,8 @@ DB: rdb1
 Username: rdbuser1
 Password: pass1
 
+# Using MySQL workbench
+Download MySQL workbench
 
 ## Setting up a connection
 Database 0> Manage connections > New > Set up new connection > Name as "NiteshPC1" > Specify details 

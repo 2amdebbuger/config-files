@@ -1,0 +1,5 @@
+
+
+Htdocs vs mysql folder
+Htdocs - web pages to access your website
+Mysql - your local database
