@@ -1,0 +1,19 @@
+
+
+https://dev.mysql.com/downloads/installer/
+
+MySQL Installer 8.0.45
+
+## Use the mysql installed in xampp
+1. navigate to directory
+cd C:\xampp\mysql\bin
+
+2. Command to use this mysql
+.\mysql.exe -h 146.230.181.104 -u rdbuser1 -p rdb1
+
+3. Type password
+
+4. Type querries
+    show tables;
+    select * from users;
+    exit

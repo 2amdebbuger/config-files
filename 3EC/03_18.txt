@@ -1,0 +1,53 @@
+
+IP / Server name: 146.230.181.104
+DB: rdb1
+Username: rdbuser1
+Password: pass1
+
+
+## Setting up a connection
+Database 0> Manage connections > New > Set up new connection > Name as "NiteshPC1" > Specify details 
+
+## To connect
+Database > Connect > Select NiteshPC1
+
+Notes:
+1. To run queries, go to add query, write, press the thunderbolt icon to run it
+2. Ensure you have "use rdb1" or double click the specific db till it turns "bold"
+
+Script:
+-- 1. Create the Database (Optional)
+-- CREATE DATABASE IF NOT EXISTS rdb1; -- but we do not need this
+USE rdb1;
+
+-- 2. Drop the table if it already exists to start fresh
+DROP TABLE IF EXISTS users;
+
+
+USE rdb1;
+
+-- 3. Create the users table
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    first_name VARCHAR(50) NOT NULL,
+    last_name VARCHAR(50) NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 4. Insert dummy users
+INSERT INTO users (first_name, last_name, email, password) VALUES
+('James', 'Smith', 'james.smith1@example.com', 'hashed_pass_1'),
+('Mary', 'Johnson', 'mary.j@example.com', 'hashed_pass_2'),
+('Robert', 'Williams', 'rob.wills@example.com', 'hashed_pass_3'),
+('Patricia', 'Brown', 'patty.b@example.com', 'hashed_pass_4'),
+('Michael', 'Jones', 'mike.jones@example.com', 'hashed_pass_5'),
+('Jennifer', 'Garcia', 'jen.garcia@example.com', 'hashed_pass_6'),
+('Linda', 'Miller', 'linda.m@example.com', 'hashed_pass_7'),
+('Elizabeth', 'Davis', 'liz.davis@example.com', 'hashed_pass_8'),
+('William', 'Rodriguez', 'will.rod@example.com', 'hashed_pass_9'),
+('David', 'Martinez', 'david.m@example.com', 'hashed_pass_10');
+
+-- 5. Verify the data
+SELECT * FROM users;
