@@ -1,0 +1,70 @@
+
+
+Open CMD 
+ftp 146.230.181.104
+
+C:\Users\Elevated>ftp 146.230.181.104
+Connected to 146.230.181.104.
+220-FileZilla Server version 0.9.41 beta
+220-written by Tim Kosse (Tim.Kosse@gmx.de)
+220 Please visit http://sourceforge.net/projects/filezilla/
+530 Please log in with USER and PASS first.
+User (146.230.181.104:(none)): user1
+331 Password required for user1
+Password:
+
+530 Login or password incorrect!
+Login failed.
+ftp> pass1
+Invalid command.
+ftp> user1
+Invalid command.
+ftp> quit
+221 Goodbye
+
+C:\Users\Elevated>ftp 146.230.181.104
+Connected to 146.230.181.104.
+220-FileZilla Server version 0.9.41 beta
+220-written by Tim Kosse (Tim.Kosse@gmx.de)
+220 Please visit http://sourceforge.net/projects/filezilla/
+530 Please log in with USER and PASS first.
+User (146.230.181.104:(none)): user1
+331 Password required for user1
+Password:
+
+530 Login or password incorrect!
+Login failed.
+ftp> quit
+221 Goodbye
+
+C:\Users\Elevated>ftp 146.230.181.104
+Connected to 146.230.181.104.
+220-FileZilla Server version 0.9.41 beta
+220-written by Tim Kosse (Tim.Kosse@gmx.de)
+220 Please visit http://sourceforge.net/projects/filezilla/
+530 Please log in with USER and PASS first.
+User (146.230.181.104:(none)): user1
+331 Password required for user1
+Password:
+
+230 Logged on
+ftp> pwd
+257 "/" is current directory.
+ftp> cd site5
+550 CWD failed. "/site5": directory not found.
+ftp> ls
+200 Port command successful
+150 Opening data channel for directory list.
+226 Transfer OK
+ftp> dir
+200 Port command successful
+150 Opening data channel for directory list.
+226 Transfer OK
+ftp> cd C:\
+550 CWD failed. "/C:": directory not found.
+ftp> cd C:
+550 CWD failed. "/C:": directory not found.
+ftp> dftp> ftp> ftp> quit
+421 No-transfer-time exceeded. Closing control connection.
+
+C:\Users\Elevated>

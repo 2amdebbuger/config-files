@@ -1,0 +1,18 @@
+
+Go to:
+en-za.wordpress.org
+
+Download wordpress:
+download the zip
+
+in htdocs past the wordpress folder, rename to web9 (access from http://localhost/web9)
+
+Create the database for the site as web9
+
+reminder
+Database Name: web9
+Username: root
+Password: ""
+Database Host: localhost
+    If we were having this on another machine, it would be the IP address of the other machine 
+Table Prefix: web9_
