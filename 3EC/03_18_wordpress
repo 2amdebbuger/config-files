@@ -7,12 +7,23 @@ download the zip
 
 in htdocs past the wordpress folder, rename to web9 (access from http://localhost/web9)
 
-Create the database for the site as web9
+## Create the database for the site
+http://localhost/phpmyadmin/
+Name it as web9
 
-reminder
+## Reminder
 Database Name: web9
 Username: root
 Password: ""
 Database Host: localhost
     If we were having this on another machine, it would be the IP address of the other machine 
 Table Prefix: web9_
+
+## Reminder
+Site Title: web10
+Username: web10
+Password: web10
+Confirm Password: check the confirm thing
+Your Email: web10@web10.com
+
+Then install wordpress
