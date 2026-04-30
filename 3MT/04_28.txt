@@ -1,0 +1,14 @@
+1. Core Network Practical: Software-Based Lab
+Because physical 5G equipment is extremely expensive, most professionals use open-source tools to build a functional end-to-end network on a single computer or server. 
+ACM Digital Library
+ACM Digital Library
+ +1
+Tools to Use:
+Core Network: Open5GS or free5GC. These act as the "brain," managing user registration and data routing.
+RAN & UE Simulator: UERANSIM. This simulates both the 5G base station (gNodeB) and the mobile phone (User Equipment).
+Analysis: Wireshark to capture and inspect the "signalling" (messages) between the phone and the network.
+Practical Exercise Steps:
+Deployment: Install Open5GS in a Linux environment (Ubuntu is standard) using Docker or virtual machines.
+Configuration: Create a "subscriber" profile in the Open5GS WebUI with specific IDs (IMSI/SUPI) and security keys.
+Connection: Run the gNodeB simulator to connect to the Core, then run the UE simulator to "attach" the virtual phone to the network.
+Testing: Open a terminal and ping an external website (like google.com) through the simulated 5G tunnel to verify end-to-end data flow.
