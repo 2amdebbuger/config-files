@@ -1,0 +1,7 @@
+Admin reports:
+Types of patients seen in a week
+Appointments in a week
+    Scheduled, Completed, No-show, as the checks allow in the database
+
+Student reports:
+Student 
