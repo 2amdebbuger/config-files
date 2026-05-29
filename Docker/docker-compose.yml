@@ -1,0 +1,130 @@
+services:
+
+  # ── Database ────────────────────────────────────────────────────────────────
+  db:
+    image: mysql:8.0
+    container_name: ${COMPOSE_PROJECT_NAME:-ecommerce}_db
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: ${DB_NAME:-wordpress}
+      MYSQL_USER: ${DB_USER:-wpuser}
+      MYSQL_PASSWORD: ${DB_PASSWORD:?DB_PASSWORD is required in .env}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:?DB_ROOT_PASSWORD is required in .env}
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - wp_net
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 30s
+
+  # ── Object Cache ────────────────────────────────────────────────────────────
+  redis:
+    image: redis:7-alpine
+    container_name: ${COMPOSE_PROJECT_NAME:-ecommerce}_redis
+    restart: unless-stopped
+    networks:
+      - wp_net
+
+  # ── WordPress (PHP 8.2 + Apache) ────────────────────────────────────────────
+  wordpress:
+    image: wordpress:php8.2-apache
+    container_name: ${COMPOSE_PROJECT_NAME:-ecommerce}_wordpress
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "${HTTP_PORT:-80}:80"
+    restart: unless-stopped
+    environment:
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_USER: ${DB_USER:-wpuser}
+      WORDPRESS_DB_PASSWORD: ${DB_PASSWORD}
+      WORDPRESS_DB_NAME: ${DB_NAME:-wordpress}
+      WORDPRESS_TABLE_PREFIX: ${DB_TABLE_PREFIX:-wp_}
+      WORDPRESS_DEBUG: ${WP_DEBUG:-0}
+      WORDPRESS_CONFIG_EXTRA: |
+        define('WP_REDIS_HOST', 'redis');
+        define('WP_REDIS_PORT', 6379);
+        define('WP_MEMORY_LIMIT', '256M');
+        define('WP_MAX_MEMORY_LIMIT', '512M');
+        define('FS_METHOD', 'direct');
+    volumes:
+      - wp_data:/var/www/html
+      - ./config/php.ini:/usr/local/etc/php/conf.d/custom.ini:ro
+      - ./config/mu-plugins:/var/www/html/wp-content/mu-plugins:ro
+    networks:
+      - wp_net
+
+  # ── One-time Setup (run: docker compose run --rm setup) ────────────────────
+  setup:
+    image: wordpress:cli-php8.2
+    container_name: ${COMPOSE_PROJECT_NAME:-ecommerce}_setup
+    profiles: ["setup"]
+    depends_on:
+      db:
+        condition: service_healthy
+      wordpress:
+        condition: service_started
+    user: "0:0"
+    restart: "no"
+    environment:
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_USER: ${DB_USER:-wpuser}
+      WORDPRESS_DB_PASSWORD: ${DB_PASSWORD}
+      WORDPRESS_DB_NAME: ${DB_NAME:-wordpress}
+      SITE_URL: ${SITE_URL:-http://localhost}
+      SITE_TITLE: ${SITE_TITLE:-My Store}
+      WP_ADMIN_USER: ${WP_ADMIN_USER:-admin}
+      WP_ADMIN_PASSWORD: ${WP_ADMIN_PASSWORD:?WP_ADMIN_PASSWORD is required in .env}
+      WP_ADMIN_EMAIL: ${WP_ADMIN_EMAIL:-admin@example.com}
+      STORE_COUNTRY: ${STORE_COUNTRY:-ZA}
+      STORE_CURRENCY: ${STORE_CURRENCY:-ZAR}
+      STORE_CURRENCY_POS: ${STORE_CURRENCY_POS:-left}
+      STORE_ADDRESS: ${STORE_ADDRESS:-}
+      STORE_CITY: ${STORE_CITY:-}
+    volumes:
+      - wp_data:/var/www/html
+      - ./scripts/setup.sh:/setup.sh:ro
+    networks:
+      - wp_net
+    entrypoint: ["sh", "/setup.sh"]
+
+  # ── Database GUI ────────────────────────────────────────────────────────────
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: ${COMPOSE_PROJECT_NAME:-ecommerce}_phpmyadmin
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "${PMA_PORT:-8080}:80"
+    restart: unless-stopped
+    environment:
+      PMA_HOST: db
+      PMA_PORT: 3306
+      UPLOAD_LIMIT: 100M
+    networks:
+      - wp_net
+
+  # ── Email Catcher (dev) ─────────────────────────────────────────────────────
+  mailpit:
+    image: axllent/mailpit:latest
+    container_name: ${COMPOSE_PROJECT_NAME:-ecommerce}_mailpit
+    restart: unless-stopped
+    ports:
+      - "${MAIL_UI_PORT:-8025}:8025"
+    expose:
+      - "1025"
+    networks:
+      - wp_net
+
+networks:
+  wp_net:
+
+volumes:
+  db_data:
+  wp_data:
